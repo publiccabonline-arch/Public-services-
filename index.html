@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Public Cab - Official App Download | Ride • Parcel • Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    :root {
+      --bg-dark: #070d1f;
+      --card-bg: #101935;
+      --card-border: rgba(255, 215, 0, 0.25);
+      --gold: #ffcc00;
+      --gold-dark: #d99b00;
+      --emerald: #00d27a;
+      --emerald-dark: #009957;
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #13224d 0%, #070d1f 65%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 50px;
+    }
+
+    /* Custom Square Popup Notification Box */
+    #customPopup {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #101935;
+      border: 2px solid var(--emerald);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 14px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.75);
+      z-index: 10000;
+      align-items: center;
+      gap: 12px;
+      min-width: 310px;
+      max-width: 92vw;
+      animation: fadeInOut 0.25s ease;
+    }
+
+    #customPopup.error {
+      border-color: #ef4444;
+    }
+
+    #customPopup i {
+      font-size: 24px;
+      color: var(--emerald);
+      flex-shrink: 0;
+    }
+
+    #customPopup.error i {
+      color: #ef4444;
+    }
+
+    @keyframes fadeInOut {
+      from { opacity: 0; transform: translate(-50%, -18px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    /* Top Header Bar */
+    .top-bar {
+      max-width: 520px;
+      margin: 14px auto;
+      padding: 10px 16px;
+      background: rgba(16, 25, 53, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-trigger img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+      background: #fff;
+    }
+
+    .brand-trigger span {
+      font-weight: 800;
+      font-size: 16px;
+      background: linear-gradient(90deg, #fff, var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .verified-badge {
+      background: linear-gradient(135deg, rgba(0, 210, 122, 0.2), rgba(0, 210, 122, 0.05));
+      border: 1px solid var(--emerald);
+      color: #4ade80;
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 0 14px;
+    }
+
+    /* Voice Welcome Banner */
+    .voice-banner {
+      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+      border: 1px solid var(--gold);
+      border-radius: 16px;
+      padding: 13px 15px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .voice-banner p {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .voice-btn {
+      background: var(--gold);
+      color: #070d1f;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* 3D Main App Card */
+    .app-hero-card {
+      background: linear-gradient(145deg, #131f42, #0c142c);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      padding: 22px 18px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .app-logo-3d {
+      width: 92px;
+      height: 92px;
+      border-radius: 22px;
+      padding: 4px;
+      background: linear-gradient(135deg, var(--gold), #ff4d4d, #2563eb);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+      flex-shrink: 0;
+    }
+
+    .app-logo-3d img {
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      object-fit: cover;
+      background: #fff;
+    }
+
+    .app-title-info h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .app-title-info .sub-domain {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .trust-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      background: rgba(255, 204, 0, 0.12);
+      border: 1px solid rgba(255, 204, 0, 0.4);
+      color: #ffe066;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: rgba(7, 13, 31, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 12px 8px;
+      margin: 18px 0;
+      text-align: center;
+    }
+
+    .stat-item {
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-val {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    @keyframes floatUpDown {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .install-buttons-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .btn-3d {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
+      animation: floatUpDown 2.2s ease-in-out infinite;
+    }
+
+    .btn-android {
+      background: linear-gradient(180deg, #00e68a 0%, #00a862 100%);
+      box-shadow: 0 6px 0 #006e40, 0 14px 25px rgba(0, 210, 122, 0.4);
+    }
+
+    .btn-ios {
+      background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+      box-shadow: 0 6px 0 #1e3a8a, 0 14px 25px rgba(37, 99, 235, 0.4);
+      animation-delay: 0.4s;
+    }
+
+    .btn-subtext {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0.92;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 20px;
+      background: var(--gold);
+      border-radius: 4px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .cat-box {
+      background: linear-gradient(145deg, #18254d, #0e1630);
+      border: 1px solid rgba(255, 204, 0, 0.2);
+      border-radius: 14px;
+      padding: 12px 6px;
+      text-align: center;
+    }
+
+    .cat-box i {
+      font-size: 22px;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .cat-box p {
+      font-size: 12px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    /* Guideline Section */
+    .guideline-box {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .guideline-header {
+      background: linear-gradient(90deg, #0f172a, #1e3a8a);
+      color: #fff;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .guideline-header h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .guideline-img-holder {
+      width: 100%;
+      background: #f8fafc;
+      text-align: center;
+      display: none;
+    }
+
+    .guideline-img-holder img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .guideline-steps {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      background: #f1f5f9;
+    }
+
+    .g-step {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      border-left: 4px solid #1d4ed8;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .g-step strong {
+      display: block;
+      font-size: 12px;
+      color: #1e3a8a;
+      margin-bottom: 3px;
+    }
+
+    .g-step span {
+      font-size: 11px;
+      color: #334155;
+      line-height: 1.35;
+      display: block;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 460px;
+      background: #101935;
+      border: 1px solid var(--gold);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .modal-header h2 {
+      font-size: 17px;
+      color: var(--gold);
+    }
+
+    .close-btn {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .admin-group {
+      background: rgba(7, 13, 31, 0.75);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 13px;
+      margin-bottom: 13px;
+    }
+
+    .admin-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+
+    .badge-live {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(0, 210, 122, 0.2);
+      color: #4ade80;
+      border: 1px solid #00d27a;
+    }
+
+    .badge-empty {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid #ef4444;
+    }
+
+    .admin-input {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #fff;
+      font-size: 12.5px;
+      margin-bottom: 8px;
+    }
+
+    .upload-btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .upload-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(90deg, #059669, #10b981);
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      flex: 0.45;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Square Popup Notification -->
+  <div id="customPopup">
+    <i class="fa-solid fa-square-check" id="popupIcon"></i>
+    <div>
+      <strong id="popupTitle" style="font-size:14px; display:block;">আপলোড কমপ্লিট!</strong>
+      <span id="popupDesc" style="font-size:11.5px; color:#cbd5e1;">ফাইলটি সফলভাবে সেভ হয়েছে।</span>
+    </div>
+  </div>
+
+  <!-- Top Bar (21 Clicks to Open Admin) -->
+  <div class="top-bar">
+    <div class="brand-trigger" id="secretAdminTrigger" title="Public Cab Official">
+      <img id="topLogoImg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle cx='100' cy='100' r='96' fill='%23003399' stroke='%23ffcc00' stroke-width='8'/><circle cx='100' cy='100' r='70' fill='%23ffffff'/><text x='100' y='92' font-family='Arial' font-weight='bold' font-size='22' fill='%23cc0000' text-anchor='middle'>PublicCab</text><text x='100' y='115' font-family='Arial' font-weight='bold' font-size='16' fill='%23003399' text-anchor='middle'>.online</text><rect x='45' y='125' width='110' height='20' rx='6' fill='%23cc0000'/><text x='100' y='139' font-family='Arial' font-weight='bold' font-size='10' fill='%23ffffff' text-anchor='middle'>Ride • Parcel • Shop</text></svg>" alt="Public Cab Logo">
+      <span>PublicCab.online</span>
+    </div>
+    <div class="verified-badge">
+      <i class="fa-solid fa-shield-check"></i> Verified • 100% Trust
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Voice Welcome Banner -->
+    <div class="voice-banner">
+      <div>
+        <p><i class="fa-solid fa-volume-high" style="color:var(--gold);"></i> পাবলিক ক্যাব অনলাইন-এ স্বাগতম!</p>
+        <span style="font-size:11px; color:var(--text-muted);">নিচে দেওয়া গাইডলাইন দেখে অ্যাপটি ডাউনলোড করুন।</span>
+      </div>
+      <button class="voice-btn" onclick="playWelcomeVoice()"><i class="fa-solid fa-play"></i> শুনুন</button>
+    </div>
+
+    <!-- Hero 3D App Download Card -->
+    <div class="app-hero-card">
+      <div class="app-header">
+        <div class="app-logo-3d">
+          <img id="mainLogoImg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle cx='100' cy='100' r='96' fill='%23003399' stroke='%23ffcc00' stroke-width='8'/><circle cx='100' cy='100' r='70' fill='%23ffffff'/><text x='100' y='92' font-family='Arial' font-weight='bold' font-size='22' fill='%23cc0000' text-anchor='middle'>PublicCab</text><text x='100' y='115' font-family='Arial' font-weight='bold' font-size='16' fill='%23003399' text-anchor='middle'>.online</text><rect x='45' y='125' width='110' height='20' rx='6' fill='%23cc0000'/><text x='100' y='139' font-family='Arial' font-weight='bold' font-size='10' fill='%23ffffff' text-anchor='middle'>Ride • Parcel • Shop</text></svg>" alt="Public Cab App">
+        </div>
+        <div class="app-title-info">
+          <h1>Public Cab</h1>
+          <div class="sub-domain">PublicCab.online • Ride • Parcel • Shop</div>
+          <div class="trust-pill">
+            <i class="fa-solid fa-circle-check"></i> Official Verified Build • 100% Safe
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-val" id="appSizeText">18.4 MB</div>
+          <div class="stat-lbl"><i class="fa-solid fa-database"></i> Size</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="downloadCountText">2,54,800+</div>
+          <div class="stat-lbl"><i class="fa-solid fa-cloud-arrow-down"></i> Downloads</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="appVersionText">v2.4.0</div>
+          <div class="stat-lbl"><i class="fa-solid fa-tag"></i> Version</div>
+        </div>
+      </div>
+
+      <div class="install-buttons-wrap">
+        <button class="btn-3d btn-android" id="androidDownloadBtn">
+          <i class="fa-brands fa-android"></i>
+          <div style="text-align:left;">
+            Install Android App (.APK)
+            <span class="btn-subtext">Direct Fast Download • All Android Phones</span>
+          </div>
+        </button>
+
+        <button class="btn-3d btn-ios" id="iosDownloadBtn">
+          <i class="fa-brands fa-apple"></i>
+          <div style="text-align:left;">
+            Install iOS / Apple App
+            <span class="btn-subtext">iPhone & iPad Direct Download</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Booking Categories -->
+    <div class="section-card">
+      <div class="section-title">Booking Categories</div>
+      <div class="category-grid">
+        <div class="cat-box"><i class="fa-solid fa-taxi"></i><p>Cab Ride</p></div>
+        <div class="cat-box"><i class="fa-solid fa-truck-medical"></i><p>Ambulance</p></div>
+        <div class="cat-box"><i class="fa-solid fa-box-open"></i><p>Parcel</p></div>
+        <div class="cat-box"><i class="fa-solid fa-store"></i><p>Shop</p></div>
+      </div>
+    </div>
+
+    <!-- Guideline Section (With Live Display Photo Box) -->
+    <div class="guideline-box">
+      <div class="guideline-header">
+        <h3><i class="fa-solid fa-book-open"></i> How to Installing Guideline</h3>
+        <span style="font-size:11px; background:#ffcc00; color:#000; padding:3px 8px; border-radius:6px; font-weight:700;">Step-by-Step</span>
+      </div>
+      
+      <!-- Guideline Uploaded Image Holder (Shows automatically when admin uploads) -->
+      <div class="guideline-img-holder" id="guidelineImageContainer">
+        <img id="guidelinePhotoImg" src="" alt="How to Installing Guideline">
+      </div>
+
+      <div class="guideline-steps">
+        <div class="g-step"><strong>1. Download App</strong><span>উপরের Install বাটনে ক্লিক করে অ্যাপ ফাইল ডাউনলোড করুন।</span></div>
+        <div class="g-step"><strong>2. Open File</strong><span>ডাউনলোড শেষ হলে ফাইলের ওপর ক্লিক করুন।</span></div>
+        <div class="g-step"><strong>3. Install Anyway</strong><span>ওয়ার্নিং আসলে "Install anyway" চাপুন।</span></div>
+        <div class="g-step"><strong>4. Ready to Use</strong><span>ইনস্টল শেষ হলে অ্যাপ ওপেন করুন।</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal-overlay" id="passwordModal">
+    <div class="modal-box" style="max-width:360px;">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-lock"></i> Admin Verification</h2>
+        <button class="close-btn" onclick="closeModals()">×</button>
+      </div>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">সিক্রেট পাসওয়ার্ড দিন:</p>
+      <input type="password" id="adminPassInput" class="admin-input" placeholder="Enter Password..." />
+      <button class="upload-btn" style="width:100%; padding:11px;" onclick="verifyAdminPassword()">Unlock Admin Panel</button>
+      <p id="passError" style="color:#f87171; font-size:12px; margin-top:8px; display:none;">ভুল পাসওয়ার্ড!</p>
+    </div>
+  </div>
+
+  <!-- Real-Time 100% Fast Admin Panel Modal -->
+  <div class="modal-overlay" id="adminPanelModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-sliders"></i> Admin Control Panel</h2>
+        <button class="close-btn" onclick="closeModals()">×</button>
+      </div>
+
+      <!-- 1. Logo Upload -->
+      <div class="admin-group">
+        <label>
+          <span><i class="fa-solid fa-image"></i> 1. Website Logo (১ সেকেন্ডে সেট হবে)</span>
+          <span id="status-logo" class="badge-empty">Default</span>
+        </label>
+        <input type="file" id="logoFileInput" accept="image/*" class="admin-input" />
+        <div class="upload-btn-row">
+          <button class="upload-btn" onclick="fastUploadFile('logo')">Upload Logo</button>
+          <button class="upload-btn delete-btn" onclick="deleteFromFirebase('logoUrl')">Remove</button>
+        </div>
+      </div>
+
+      <!-- 2. Android APK Link / File Upload -->
+      <div class="admin-group">
+        <label>
+          <span><i class="fa-brands fa-android"></i> 2. Android APK (লিংক দিন অথবা ফাইল আপলোড করুন)</span>
+          <span id="status-android" class="badge-empty">Not Uploaded</span>
+        </label>
+        <input type="text" id="androidLinkInput" class="admin-input" placeholder="ডাউনলোড লিংক পেস্ট করুন (যেমন: Google Drive / Mediafire Link)..." />
+        <input type="file" id="androidFileInput" accept=".apk,.zip,*/*" class="admin-input" />
+        <div class="upload-btn-row">
+          <button class="upload-btn" onclick="fastUploadFile('android')">Save APK File / Link</button>
+          <button class="upload-btn delete-btn" onclick="deleteFromFirebase('androidUrl')">Remove</button>
+        </div>
+      </div>
+
+      <!-- 3. iOS App Link / File Upload -->
+      <div class="admin-group">
+        <label>
+          <span><i class="fa-brands fa-apple"></i> 3. iOS / Apple File / Link</span>
+          <span id="status-ios" class="badge-empty">Not Uploaded</span>
+        </label>
+        <input type="text" id="iosLinkInput" class="admin-input" placeholder="iOS ডাউনলোড লিংক পেস্ট করুন..." />
+        <input type="file" id="iosFileInput" accept=".ipa,.mobileconfig,*/*" class="admin-input" />
+        <div class="upload-btn-row">
+          <button class="upload-btn" onclick="fastUploadFile('ios')">Save iOS File / Link</button>
+          <button class="upload-btn delete-btn" onclick="deleteFromFirebase('iosUrl')">Remove</button>
+        </div>
+      </div>
+
+      <!-- 4. Guideline Image Upload -->
+      <div class="admin-group">
+        <label>
+          <span><i class="fa-solid fa-book"></i> 4. Guideline Image (ইনস্টলেশন গাইডলাইন ফটো)</span>
+          <span id="status-guideline" class="badge-empty">Not Set</span>
+        </label>
+        <input type="file" id="guideFileInput" accept="image/*" class="admin-input" />
+        <div class="upload-btn-row">
+          <button class="upload-btn" onclick="fastUploadFile('guideline')">Upload Guideline</button>
+          <button class="upload-btn delete-btn" onclick="deleteFromFirebase('guidelineUrl')">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (Realtime Database Only for Super Fast 1-Second Save) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDJmu9uD5rT5ee1jNLpMQaTVIa_-yTrPzw",
+      authDomain: "public-service-11054.firebaseapp.com",
+      databaseURL: "https://public-service-11054-default-rtdb.firebaseio.com",
+      projectId: "public-service-11054",
+      storageBucket: "public-service-11054.firebasestorage.app",
+      messagingSenderId: "639313474404",
+      appId: "1:639313474404:web:9ac4645e521021c044c071",
+      measurementId: "G-ZMCRHQ4VC3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let liveAppData = {
+      logoUrl: "",
+      androidUrl: "",
+      androidSize: "18.4 MB",
+      iosUrl: "",
+      guidelineUrl: "",
+      downloads: 254800
+    };
+
+    // Custom Square Popup Notification
+    function showPopup(title, desc, isError = false) {
+      const pop = document.getElementById("customPopup");
+      const icon = document.getElementById("popupIcon");
+      document.getElementById("popupTitle").innerText = title;
+      document.getElementById("popupDesc").innerText = desc;
+      
+      if (isError) {
+        pop.classList.add("error");
+        icon.className = "fa-solid fa-triangle-exclamation";
+      } else {
+        pop.classList.remove("error");
+        icon.className = "fa-solid fa-square-check";
+      }
+
+      pop.style.display = "flex";
+      clearTimeout(window.popupTimer);
+      window.popupTimer = setTimeout(() => {
+        pop.style.display = "none";
+      }, 3500);
+    }
+
+    // Update Admin Status Badges
+    function updateStatusBadges() {
+      const setBadge = (id, active, textActive, textInactive) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.className = active ? "badge-live" : "badge-empty";
+        el.innerText = active ? textActive : textInactive;
+      };
+      setBadge("status-logo", !!liveAppData.logoUrl, "Saved Live ✓", "Default");
+      setBadge("status-android", !!liveAppData.androidUrl, "APK Live ✓", "Not Uploaded");
+      setBadge("status-ios", !!liveAppData.iosUrl, "iOS Live ✓", "Not Uploaded");
+      setBadge("status-guideline", !!liveAppData.guidelineUrl, "Guide Live ✓", "Not Set");
+    }
+
+    // Real-Time Database Listener
+    db.ref("publicCabApp").on("value", (snapshot) => {
+      const data = snapshot.val() || {};
+      liveAppData = {
+        logoUrl: data.logoUrl || "",
+        androidUrl: data.androidUrl || "",
+        androidSize: data.androidSize || "18.4 MB",
+        iosUrl: data.iosUrl || "",
+        guidelineUrl: data.guidelineUrl || "",
+        downloads: data.downloads || 254800
+      };
+
+      if (liveAppData.logoUrl) {
+        document.getElementById("topLogoImg").src = liveAppData.logoUrl;
+        document.getElementById("mainLogoImg").src = liveAppData.logoUrl;
+      }
+      document.getElementById("appSizeText").innerText = liveAppData.androidSize;
+      document.getElementById("downloadCountText").innerText = Number(liveAppData.downloads).toLocaleString() + "+";
+
+      const guideContainer = document.getElementById("guidelineImageContainer");
+      const guideImg = document.getElementById("guidelinePhotoImg");
+      if (liveAppData.guidelineUrl) {
+        guideImg.src = liveAppData.guidelineUrl;
+        guideContainer.style.display = "block";
+      } else {
+        guideContainer.style.display = "none";
+      }
+
+      updateStatusBadges();
+    });
+
+    // Bengali Voice Welcome Message
+    function playWelcomeVoice() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const text = "পাবলিক ক্যাব অনলাইন-এ আপনাকে স্বাগতম। নিচে দেওয়া ইনস্টলিং গাইডলাইনটি দেখে অ্যাপটি ডাউনলোড করে মোবাইলে ইনস্টল করে নিন।";
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'bn-BD';
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        showPopup("ভয়েস সাপোর্ট নেই", "আপনার ব্রাউজারে অডিও সাপোর্ট করছে না।", true);
+      }
+    }
+
+    // Customer Download Handlers
+    document.getElementById("androidDownloadBtn").addEventListener("click", () => {
+      if (!liveAppData.androidUrl) {
+        showPopup("ফাইল পাওয়া যায়নি", "অ্যান্ড্রয়েড এপিকে ফাইলটি এখনো আপলোড করা হয়নি।", true);
+        return;
+      }
+      db.ref("publicCabApp/downloads").set((liveAppData.downloads || 254800) + 1);
+      showPopup("ডাউনলোড শুরু হচ্ছে...", "PublicCab_Official.apk ডাউনলোড হচ্ছে।");
+      const link = document.createElement("a");
+      link.href = liveAppData.androidUrl;
+      link.target = "_blank";
+      link.setAttribute("download", "PublicCab_Official.apk");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    document.getElementById("iosDownloadBtn").addEventListener("click", () => {
+      if (!liveAppData.iosUrl) {
+        showPopup("ফাইল পাওয়া যায়নি", "আইওএস অ্যাপ ফাইলটি এখনো আপলোড করা হয়নি।", true);
+        return;
+      }
+      db.ref("publicCabApp/downloads").set((liveAppData.downloads || 254800) + 1);
+      showPopup("ডাউনলোড শুরু হচ্ছে...", "PublicCab_iOS অ্যাপ ডাউনলোড হচ্ছে।");
+      const link = document.createElement("a");
+      link.href = liveAppData.iosUrl;
+      link.target = "_blank";
+      link.setAttribute("download", "PublicCab_iOS.ipa");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // 21 Clicks Secret Trigger
+    let clickCount = 0;
+    let clickResetTimer = null;
+    document.getElementById("secretAdminTrigger").addEventListener("click", () => {
+      clickCount++;
+      clearTimeout(clickResetTimer);
+      clickResetTimer = setTimeout(() => { clickCount = 0; }, 4000);
+      if (clickCount >= 21) {
+        clickCount = 0;
+        document.getElementById("adminPassInput").value = "";
+        document.getElementById("passError").style.display = "none";
+        document.getElementById("passwordModal").style.display = "flex";
+      }
+    });
+
+    function verifyAdminPassword() {
+      const entered = document.getElementById("adminPassInput").value.trim();
+      if (entered === "78764825555") {
+        document.getElementById("passwordModal").style.display = "none";
+        document.getElementById("adminPanelModal").style.display = "flex";
+      } else {
+        document.getElementById("passError").style.display = "block";
+      }
+    }
+
+    function closeModals() {
+      document.getElementById("passwordModal").style.display = "none";
+      document.getElementById("adminPanelModal").style.display = "none";
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    // Helper: Convert File to Base64 instantly
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // 100% Fast Direct 1-Second Upload/Save System
+    async function fastUploadFile(type) {
+      let fileInputId = "";
+      let linkInputId = "";
+
+      if (type === "logo") fileInputId = "logoFileInput";
+      else if (type === "guideline") fileInputId = "guideFileInput";
+      else if (type === "android") { fileInputId = "androidFileInput"; linkInputId = "androidLinkInput"; }
+      else if (type === "ios") { fileInputId = "iosFileInput"; linkInputId = "iosLinkInput"; }
+
+      const fileInput = document.getElementById(fileInputId);
+      const linkInput = linkInputId ? document.getElementById(linkInputId) : null;
+
+      const file = fileInput ? fileInput.files[0] : null;
+      const directLink = linkInput ? linkInput.value.trim() : "";
+
+      if (!file && !directLink) {
+        showPopup("ফাইল নির্বাচন করুন", "অনুগ্রহ করে ফাইল সিলেক্ট করুন অথবা লিংক দিন।", true);
+        return;
+      }
+
+      showPopup("আপলোড হচ্ছে...", "কয়েক সেকেন্ড অপেক্ষা করুন...");
+
+      try {
+        const updates = {};
+
+        if (directLink) {
+          if (type === "android") updates.androidUrl = directLink;
+          if (type === "ios") updates.iosUrl = directLink;
+        } else if (file) {
+          // Convert file to Base64 for instant Database storage without Storage rules blockage
+          const base64Data = await fileToBase64(file);
+          
+          if (type === "logo") updates.logoUrl = base64Data;
+          else if (type === "guideline") updates.guidelineUrl = base64Data;
+          else if (type === "android") {
+            updates.androidUrl = base64Data;
+            updates.androidSize = formatFileSize(file.size);
+          }
+          else if (type === "ios") {
+            updates.iosUrl = base64Data;
+          }
+        }
+
+        // Save directly to Firebase Realtime Database instantly
+        await db.ref("publicCabApp").update(updates);
+
+        if (fileInput) fileInput.value = "";
+        if (linkInput) linkInput.value = "";
+
+        showPopup("আপলোড কমপ্লিট!", "ফাইলটি সফলভাবে ফায়ারবেসে সেভ হয়েছে!");
+      } catch (err) {
+        showPopup("আপলোড ব্যর্থ", err.message, true);
+      }
+    }
+
+    // Delete / Remove File from Firebase
+    async function deleteFromFirebase(fieldKey) {
+      try {
+        const updates = {};
+        updates[fieldKey] = "";
+        await db.ref("publicCabApp").update(updates);
+        showPopup("রিমুভ কমপ্লিট!", "ফাইলটি সফলভাবে মুছে ফেলা হয়েছে।");
+      } catch (err) {
+        showPopup("ব্যর্থ হয়েছে", err.message, true);
+      }
+    }
+  </script>
+</body>
+</html>
